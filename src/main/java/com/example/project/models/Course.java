@@ -2,9 +2,7 @@ package com.example.project.models;
 
 import com.fasterxml.jackson.annotation.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,16 +13,20 @@ public class Course {
     @Id
     private String courseName;
 
-    @ManyToMany(mappedBy = "courses")
-    @JsonIgnore
+    /*@ManyToMany(mappedBy = "courses")
+    @JsonIgnore*/
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @JoinTable(name = "course_user",
+            joinColumns = @JoinColumn(name = "course_courseName"),
+            inverseJoinColumns = @JoinColumn(name = "user_username")
+    )
     private List<User> users = new ArrayList<>();
 
     public Course() {
     }
 
-    public Course(String courseName, List<User> users) {
+    public Course(String courseName) {
         this.courseName = courseName;
-        this.users = users;
     }
 
     public String getCourseName() {

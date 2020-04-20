@@ -40,12 +40,12 @@ public class User {
     @JsonManagedReference
     private List<Education> educations;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_course",
-            joinColumns = @JoinColumn(name = "user_username"),
-            inverseJoinColumns = @JoinColumn(name = "course_courseName")
-    )
-
+    /*@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @JoinTable(name = "course_user",
+            joinColumns = @JoinColumn(name = "course_courseName"),
+            inverseJoinColumns = @JoinColumn(name = "user_username")
+    )*/
+    @ManyToMany(mappedBy = "users",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Course> courses = new ArrayList<>();
 
     public User(){}
