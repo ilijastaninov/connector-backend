@@ -41,7 +41,7 @@ public class UserService {
         userServiceRepository.deleteByUsername(username);
     }
 
-    public User postUserToCourse(String username, Course newCourse){
+    /*public User postUserToCourse(String username, Course newCourse){
 
         return userServiceRepository.getByUsername(username).map(
                 user -> {
@@ -51,5 +51,8 @@ public class UserService {
         ).orElseGet(() -> {
             return null;
         });
-    }
+    }*/
+    /*public void postUserCourse(User user){
+        userServiceRepository.save(user);
+    }*/
 }

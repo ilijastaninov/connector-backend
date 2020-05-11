@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,16 +12,15 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Course {
     @Id
+    @Column(name = "course_name",unique = true)
     private String courseName;
 
     /*@ManyToMany(mappedBy = "courses")
     @JsonIgnore*/
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
-    @JoinTable(name = "course_user",
-            joinColumns = @JoinColumn(name = "course_courseName"),
-            inverseJoinColumns = @JoinColumn(name = "user_username")
-    )
-    private List<User> users = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 
     public Course() {
     }
@@ -37,11 +37,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 }

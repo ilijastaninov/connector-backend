@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User {
     @Id
-    @Column(name = "username_user")
+    @Column(name = "username_user",unique = true)
     private String username;
     private String password;
     private String name;
@@ -45,8 +46,12 @@ public class User {
             joinColumns = @JoinColumn(name = "course_courseName"),
             inverseJoinColumns = @JoinColumn(name = "user_username")
     )*/
-    @ManyToMany(mappedBy = "users",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private List<Course> courses = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "user_course",
+            joinColumns = @JoinColumn(name = "user_username"),
+            inverseJoinColumns = @JoinColumn(name = "course_courseName")
+    )
+    private Set<Course> courses = new HashSet<>();
 
     public User(){}
     public User(String username,String password, String name,String email) {
@@ -56,11 +61,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 

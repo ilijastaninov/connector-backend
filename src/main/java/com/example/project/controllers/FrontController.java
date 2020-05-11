@@ -6,6 +6,7 @@ import com.example.project.jwt.models.AuthenticationRequest;
 import com.example.project.jwt.models.AuthenticationResponse;
 import com.example.project.models.Course;
 import com.example.project.models.User;
+import com.example.project.services.CourseService;
 import com.example.project.services.MyUserDetailsService;
 import com.example.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class FrontController {
 
     @Autowired
     UserService userService;
+
 
 
     @GetMapping("/users")
@@ -68,10 +70,13 @@ public class FrontController {
         userService.deleteUser(username);
     }
 
-    @PostMapping("/users/{username}/courses")
-    public User addUserToCourse(@PathVariable String username, @RequestBody Course course){
-        return userService.postUserToCourse(username,course);
-    }
+    /*@PostMapping("/user/{username}/courses/{courseName}")
+    public void addUserToCourse(@PathVariable String username,@RequestBody User user,@PathVariable String courseName){
+            Course course = new Course(courseName);
+            System.out.println(course);
+            user.getCourses().add(course);
+            userService.postUserCourse(user);
+    }*/
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
